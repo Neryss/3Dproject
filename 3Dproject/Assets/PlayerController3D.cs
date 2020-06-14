@@ -22,6 +22,7 @@ public class PlayerController3D : MonoBehaviour
         MouseController();
     }
 
+    //Use the fixed update since we calculate physics
     void FixedUpdate()
     {
         Move();
@@ -45,8 +46,8 @@ public class PlayerController3D : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        Vector3 direction = new Vector3(x, 0, z).normalized;
+        Vector3 direction = new Vector3(x, 0, z);
         Vector3 moveDir = ((transform.forward * direction.z) * speed) + ((transform.right * direction.x) * speed);
-        rb.velocity = moveDir + baseGravity;
+        rb.velocity = moveDir + baseGravity;    //need to add the other vector to apply gravity properly, need to check if it doesn't fuck with other things
     }
 }
