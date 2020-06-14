@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LookController : MonoBehaviour
+public class PlayerController3D : MonoBehaviour
 {
     public float mouseSensitivity = 100f;
     private float xRotation = 0f;
-    public Transform playerBody;
+    public Transform camTransform;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,10 +16,10 @@ public class LookController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MouseMovement();
+        MouseController();
     }
 
-    private void MouseMovement()
+    private void MouseController()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
@@ -27,7 +27,7 @@ public class LookController : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        playerBody.Rotate(Vector3.up * mouseX);
+        camTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
+        transform.Rotate(Vector3.up * mouseX);
     }
 }
