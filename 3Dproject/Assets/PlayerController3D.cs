@@ -48,7 +48,7 @@ public class PlayerController3D : MonoBehaviour
         Vector3 camF = camTransform.forward;
         Vector3 camR = camTransform.right;
 
-        Vector3 moveDir = ((camF * direction.z) * speed) + ((camR * direction.x) * speed);
+        Vector3 moveDir = ((transform.forward * direction.z) * speed) + ((transform.right * direction.x) * speed);
         Debug.Log(camF);
         Debug.Log(moveDir);
         rb.velocity = moveDir;
