@@ -9,6 +9,7 @@ public class PlayerController3D : MonoBehaviour
     public Transform camTransform;
     public float speed = 10f;
     private Rigidbody rb;
+    private float saveSpeed;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,14 @@ public class PlayerController3D : MonoBehaviour
     //Use the fixed update since we calculate physics
     void FixedUpdate()
     {
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            Sprint();
+        }
+        else
+        {
+            StopSprint();
+        }
         Move();
     }
 
@@ -49,5 +58,15 @@ public class PlayerController3D : MonoBehaviour
         Vector3 direction = new Vector3(x, 0, z);
         Vector3 moveDir = ((transform.forward * direction.z) * speed) + ((transform.right * direction.x) * speed);
         rb.velocity = moveDir + baseGravity;    //need to add the other vector to apply gravity properly, need to check if it doesn't fuck with other things
+    }
+
+    private void Sprint()
+    {
+        speed = 50f;
+    }
+
+    private void StopSprint()
+    {
+        speed = 10f;
     }
 }
