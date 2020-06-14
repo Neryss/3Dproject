@@ -45,12 +45,8 @@ public class PlayerController3D : MonoBehaviour
         float z = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(x, 0, z).normalized;
-        Vector3 camF = camTransform.forward;
-        Vector3 camR = camTransform.right;
 
         Vector3 moveDir = ((transform.forward * direction.z) * speed) + ((transform.right * direction.x) * speed);
-        Debug.Log(camF);
-        Debug.Log(moveDir);
         rb.velocity = moveDir;
     }
 }
