@@ -731,6 +731,16 @@ PrefabInstance:
       propertyPath: groundCheckPos
       value: 
       objectReference: {fileID: 1349185757}
+    - target: {fileID: 5752582244248641232, guid: b84af1a588c908840b20463306df3f99,
+        type: 3}
+      propertyPath: whatIsGround.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
+    - target: {fileID: 5752582244248641232, guid: b84af1a588c908840b20463306df3f99,
+        type: 3}
+      propertyPath: whatIsPlayer.m_Bits
+      value: 512
+      objectReference: {fileID: 0}
     - target: {fileID: 5752582244248641238, guid: b84af1a588c908840b20463306df3f99,
         type: 3}
       propertyPath: m_LocalPosition.x
