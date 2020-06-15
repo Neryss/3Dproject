@@ -8,8 +8,12 @@ public class PlayerController3D : MonoBehaviour
     private float xRotation = 0f;
     public Transform camTransform;
     public float speed = 10f;
+    private float sprintSpeed = 20f;
     private Rigidbody rb;
     private float saveSpeed;
+    public bool isGrounded = false;
+    [Range(1, 10)]
+    public float jumpVelocity;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +25,10 @@ public class PlayerController3D : MonoBehaviour
     void Update()
     {
         MouseController();
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Jump();
+        }
     }
 
     //Use the fixed update since we calculate physics
@@ -51,7 +59,7 @@ public class PlayerController3D : MonoBehaviour
 
     private void Move()
     {
-        Vector3 baseGravity = new Vector3(0f, rb.velocity.y, 0f);
+        Vector3 baseGravity = new Vector3(0f, rb.velocity.y - .5f, 0f);     //tried with an offset for the gravity
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
@@ -60,13 +68,26 @@ public class PlayerController3D : MonoBehaviour
         rb.velocity = moveDir + baseGravity;    //need to add the other vector to apply gravity properly, need to check if it doesn't fuck with other things
     }
 
+    //Lazy smoothing for sprinting
     private void Sprint()
     {
-        speed = 50f;
+        if(speed < sprintSpeed)
+        {
+            speed = speed + 1;
+        }
+        else
+        {
+            speed = sprintSpeed;
+        }
     }
 
     private void StopSprint()
     {
         speed = 10f;
+    }
+
+    private void Jump()
+    {
+        rb.velocity = Vector3.up * jumpVelocity;
     }
 }
