@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController3D : MonoBehaviour
 {
+    public LayerMask groundLayer;
     public float mouseSensitivity = 100f;
     private float xRotation = 0f;
     public Transform camTransform;
@@ -12,6 +13,7 @@ public class PlayerController3D : MonoBehaviour
     private Rigidbody rb;
     private float saveSpeed;
     public bool isGrounded = false;
+    public Transform groundCheckPos;
     [Range(1, 10)]
     public float jumpVelocity;
     // Start is called before the first frame update
@@ -24,8 +26,16 @@ public class PlayerController3D : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(CheckGround())
+        {
+            Debug.Log("Touching ground");
+        }
+        else if(CheckGround() == false)
+        {
+            Debug.Log("Not touching ground");
+        }
         MouseController();
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && CheckGround())
         {
             Jump();
         }
@@ -88,6 +98,26 @@ public class PlayerController3D : MonoBehaviour
 
     private void Jump()
     {
-        rb.velocity = Vector3.up * jumpVelocity;
+        if(rb.velocity.y < 0.5f)
+        {
+            rb.velocity = Vector3.up * jumpVelocity;
+        }
+        else if(rb.velocity.y > 0)
+        {
+            rb.velocity = (Vector3.up * jumpVelocity) / 2;
+        }
+    }
+
+    private bool CheckGround()
+    {
+        Collider[] ground = Physics.OverlapSphere(groundCheckPos.position, 0.1f, groundLayer);
+        if(ground != null)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
