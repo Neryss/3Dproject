@@ -4,20 +4,27 @@ using UnityEngine;
 
 public class PlayerController3D : MonoBehaviour
 {
-    public LayerMask groundLayer;
-    public float mouseSensitivity = 100f;
-    private float xRotation = 0f;
+    //Movement
     private float x, z;
-    public bool jumping;
-    public Transform camTransform;
     public float speed = 10f;
     private float sprintSpeed = 20f;
-    private Rigidbody rb;
-    private float saveSpeed;
     public bool isGrounded = false;
-    public Transform groundCheckPos;
+    public LayerMask groundLayer;
+
+    //Look and rot
+    public float mouseSensitivity = 100f;
+    private float xRotation = 0f;
+
+    //Jumping
+    private bool jumping;
+    private bool readyToJump = true;
     [Range(1, 10)]
     public float jumpVelocity;
+
+    //Assignable
+    public Transform camTransform;
+    private Rigidbody rb;
+    public Transform groundCheckPos;
     // Start is called before the first frame update
     void Start()
     {
@@ -62,6 +69,9 @@ public class PlayerController3D : MonoBehaviour
         Vector3 direction = new Vector3(x, 0, z);
         Vector3 moveDir = ((transform.forward * direction.z) * speed) + ((transform.right * direction.x) * speed);
         rb.velocity = moveDir + baseGravity;    //need to add the other vector to apply gravity properly, need to check if it doesn't fuck with other things
+
+        if(jumping && readyToJump)
+            Jump();
     }
 
     private void MyInput()
@@ -87,13 +97,13 @@ public class PlayerController3D : MonoBehaviour
 
     private void Jump()
     {
-        if(rb.velocity.y < 0.5f)
+        if(isGrounded && readyToJump)
         {
-            rb.velocity = Vector3.up * jumpVelocity;
-        }
-        else if(rb.velocity.y > 0)
-        {
-            rb.velocity = (Vector3.up * jumpVelocity) / 2;
+            readyToJump = false;
+            if(rb.velocity.y < 0.5f)
+                rb.velocity = Vector3.up * jumpVelocity;
+            else if(rb.velocity.y > 0)
+                rb.velocity = (Vector3.up * jumpVelocity) / 2;
         }
     }
 
