@@ -26,21 +26,16 @@ public class PlayerController3D : MonoBehaviour
     private Rigidbody rb;
     public Transform groundCheckPos;
     // Start is called before the first frame update
-    void Start()
+
+    void Awake() 
     {
         rb = GetComponent<Rigidbody>();
+    }
+    void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        isGrounded = CheckGround();
-        MyInput();
-        Look();
-    }
-
-    //Use the fixed update since we calculate physics
     void FixedUpdate()
     {
         if(CheckGround())
@@ -49,7 +44,13 @@ public class PlayerController3D : MonoBehaviour
             Debug.Log("Not touching ground");
         Move();
     }
-
+    // Update is called once per frame
+    void Update()
+    {
+        isGrounded = CheckGround();
+        MyInput();
+        Look();
+    }
     private void Look()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
