@@ -7,6 +7,8 @@ public class PlayerController3D : MonoBehaviour
     public LayerMask groundLayer;
     public float mouseSensitivity = 100f;
     private float xRotation = 0f;
+    private float x, z;
+    public bool jumping;
     public Transform camTransform;
     public float speed = 10f;
     private float sprintSpeed = 20f;
@@ -26,24 +28,21 @@ public class PlayerController3D : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(CheckGround())
-        {
-            Debug.Log("Touching ground");
-        }
-        else if(CheckGround() == false)
-        {
-            Debug.Log("Not touching ground");
-        }
-        MouseController();
-        if(Input.GetKeyDown(KeyCode.Space) && CheckGround())
-        {
-            Jump();
-        }
+        isGrounded = CheckGround();
     }
 
     //Use the fixed update since we calculate physics
     void FixedUpdate()
     {
+        if(CheckGround())
+            Debug.Log("Touching ground");
+        else if(CheckGround() == false)
+            Debug.Log("Not touching ground");
+        MouseController();
+        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        {
+            Jump();
+        }
         if(Input.GetKey(KeyCode.LeftShift))
         {
             Sprint();
@@ -70,25 +69,26 @@ public class PlayerController3D : MonoBehaviour
     private void Move()
     {
         Vector3 baseGravity = new Vector3(0f, rb.velocity.y - .5f, 0f);     //tried with an offset for the gravity
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
+    
         Vector3 direction = new Vector3(x, 0, z);
         Vector3 moveDir = ((transform.forward * direction.z) * speed) + ((transform.right * direction.x) * speed);
         rb.velocity = moveDir + baseGravity;    //need to add the other vector to apply gravity properly, need to check if it doesn't fuck with other things
+    }
+
+    private void MyInput()
+    {
+        x = Input.GetAxis("Horizontal");
+        z = Input.GetAxis("Vertical");
+        jumping = Input.GetKeyDown(KeyCode.Space);
     }
 
     //Lazy smoothing for sprinting
     private void Sprint()
     {
         if(speed < sprintSpeed)
-        {
             speed = speed + 1;
-        }
         else
-        {
             speed = sprintSpeed;
-        }
     }
 
     private void StopSprint()
@@ -110,14 +110,9 @@ public class PlayerController3D : MonoBehaviour
 
     private bool CheckGround()
     {
-        Collider[] ground = Physics.OverlapSphere(groundCheckPos.position, 0.1f, groundLayer);
-        if(ground != null)
-        {
-            return true;
-        }
+        if(Physics.Raycast(groundCheckPos.position, Vector3.down, 0.5f))
+            return(true);
         else
-        {
-            return false;
-        }
-    }
+            return(false);
+    }       //doesn't seem to work properly
 }
