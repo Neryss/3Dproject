@@ -29,6 +29,8 @@ public class PlayerController3D : MonoBehaviour
     void Update()
     {
         isGrounded = CheckGround();
+        MyInput();
+        Look();
     }
 
     //Use the fixed update since we calculate physics
@@ -38,23 +40,10 @@ public class PlayerController3D : MonoBehaviour
             Debug.Log("Touching ground");
         else if(CheckGround() == false)
             Debug.Log("Not touching ground");
-        MouseController();
-        if(Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            Jump();
-        }
-        if(Input.GetKey(KeyCode.LeftShift))
-        {
-            Sprint();
-        }
-        else
-        {
-            StopSprint();
-        }
         Move();
     }
 
-    private void MouseController()
+    private void Look()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
