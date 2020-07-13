@@ -44,6 +44,7 @@ public class PlayerController3D : MonoBehaviour
             Debug.Log("Not touching ground");
         Move();
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -51,6 +52,7 @@ public class PlayerController3D : MonoBehaviour
         MyInput();
         Look();
     }
+
     private void Look()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
@@ -79,7 +81,7 @@ public class PlayerController3D : MonoBehaviour
     {
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
-        jumping = Input.GetKeyDown(KeyCode.Space);
+        jumping = Input.GetKey(KeyCode.Space);
     }
 
     //Lazy smoothing for sprinting
@@ -105,7 +107,13 @@ public class PlayerController3D : MonoBehaviour
                 rb.velocity = Vector3.up * jumpVelocity;
             else if(rb.velocity.y > 0)
                 rb.velocity = (Vector3.up * jumpVelocity) / 2;
+            Invoke(nameof(ResetJump), 1);
         }
+    }
+
+    private void ResetJump()
+    {
+        readyToJump = true;
     }
 
     private bool CheckGround()
