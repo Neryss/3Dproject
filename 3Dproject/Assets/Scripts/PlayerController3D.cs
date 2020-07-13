@@ -18,6 +18,7 @@ public class PlayerController3D : MonoBehaviour
     //Jumping
     private bool jumping;
     private bool readyToJump = true;
+    private float jumpCd = 0.25f;
     [Range(1, 10)]
     public float jumpVelocity;
 
@@ -107,7 +108,7 @@ public class PlayerController3D : MonoBehaviour
                 rb.velocity = Vector3.up * jumpVelocity;
             else if(rb.velocity.y > 0)
                 rb.velocity = (Vector3.up * jumpVelocity) / 2;
-            Invoke(nameof(ResetJump), 1);
+            Invoke(nameof(ResetJump), jumpCd);
         }
     }
 
@@ -122,5 +123,5 @@ public class PlayerController3D : MonoBehaviour
             return(true);
         else
             return(false);
-    }       //doesn't seem to work properly
+    }
 }
