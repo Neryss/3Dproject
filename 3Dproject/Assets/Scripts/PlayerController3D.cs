@@ -26,6 +26,7 @@ public class PlayerController3D : MonoBehaviour
     private Rigidbody rb;
     public Transform groundCheckPos;
     public Transform cameraHandler;
+    public Transform orientation;
     // Start is called before the first frame update
 
     void Awake() 
@@ -64,6 +65,8 @@ public class PlayerController3D : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         cameraHandler.transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0f);
+        //transform.rotation = Quaternion.Euler(transform.rotation.x, desiredX, transform.rotation.z);
+        orientation.transform.localRotation = Quaternion.Euler(0, desiredX, 0);
     }
 
     private void Move()
@@ -71,7 +74,7 @@ public class PlayerController3D : MonoBehaviour
         Vector3 baseGravity = new Vector3(0f, rb.velocity.y - .5f, 0f);     //tried with an offset for the gravity
     
         Vector3 direction = new Vector3(x, 0, z);
-        Vector3 moveDir = ((transform.forward * direction.z) * speed) + ((transform.right * direction.x) * speed);
+        Vector3 moveDir = ((orientation.forward * direction.z) * speed) + ((orientation.right * direction.x) * speed);
         rb.velocity = moveDir + baseGravity;    //need to add the other vector to apply gravity properly, need to check if it doesn't fuck with other things
 
         if(jumping && readyToJump)
