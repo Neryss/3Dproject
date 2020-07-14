@@ -39,10 +39,6 @@ public class PlayerController3D : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(CheckGround())
-            Debug.Log("Touching ground");
-        else if(CheckGround() == false)
-            Debug.Log("Not touching ground");
         Move();
     }
 
@@ -119,7 +115,7 @@ public class PlayerController3D : MonoBehaviour
 
     private bool CheckGround()
     {
-        if(Physics.Raycast(groundCheckPos.position, Vector3.down, 0.5f))
+        if(Physics.Raycast(groundCheckPos.position, Vector3.down, 0.5f, groundLayer))
             return(true);
         else
             return(false);
