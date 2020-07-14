@@ -9,6 +9,5 @@ public class MoveCamera : MonoBehaviour
     void Update()
     {
         transform.position = player.position;
-        transform.rotation = player.rotation;
     }
 }

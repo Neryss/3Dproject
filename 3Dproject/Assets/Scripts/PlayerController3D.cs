@@ -64,7 +64,6 @@ public class PlayerController3D : MonoBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         cameraHandler.transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0f);
-        transform.localRotation = Quaternion.Euler(0, desiredX, 0);
     }
 
     private void Move()
