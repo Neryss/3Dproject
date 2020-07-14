@@ -23,9 +23,9 @@ public class PlayerController3D : MonoBehaviour
     public float jumpVelocity;
 
     //Assignable
-    public Transform camTransform;
     private Rigidbody rb;
     public Transform groundCheckPos;
+    public Transform cameraHandler;
     // Start is called before the first frame update
 
     void Awake() 
@@ -52,14 +52,19 @@ public class PlayerController3D : MonoBehaviour
 
     private void Look()
     {
+        float desiredX;
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+        //To find the actual look rotation
+        Vector3 rot = cameraHandler.transform.localRotation.eulerAngles;
+        desiredX = rot.y + mouseX;
 
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        camTransform.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
-        transform.Rotate(Vector3.up * mouseX);
+        cameraHandler.transform.localRotation = Quaternion.Euler(xRotation, desiredX, 0f);
+        transform.localRotation = Quaternion.Euler(0, desiredX, 0);
     }
 
     private void Move()
