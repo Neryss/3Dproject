@@ -7,6 +7,7 @@ public class PlayerController3D : MonoBehaviour
     //Movement
     private float x, z;
     public float speed = 10f;
+    private float speedMult = 1f;
     private float sprintSpeed = 20f;
     public bool isGrounded = false;
     public LayerMask groundLayer;
@@ -71,10 +72,16 @@ public class PlayerController3D : MonoBehaviour
 
     private void Move()
     {
+        //Add extra gravity
         Vector3 baseGravity = new Vector3(0f, rb.velocity.y - .5f, 0f);     //tried with an offset for the gravity
-    
+
+        //Adjust speed while airborne
+        if(!isGrounded)
+            speedMult = 0.5f;
+        else
+            speedMult = 1f;
         Vector3 direction = new Vector3(x, 0, z);
-        Vector3 moveDir = ((orientation.forward * direction.z) * speed) + ((orientation.right * direction.x) * speed);
+        Vector3 moveDir = ((orientation.forward * direction.z) * speed * speedMult) + ((orientation.right * direction.x) * speed * speedMult);
         rb.velocity = moveDir + baseGravity;    //need to add the other vector to apply gravity properly, need to check if it doesn't fuck with other things
 
         if(jumping && readyToJump)
