@@ -1,0 +1,14 @@
+{
+	"folders":
+	[
+		{
+			"path": "3Dproject/Assets/Scripts",
+			"file_exclude_patterns":
+			[
+				"*.dll",
+				"*.meta"
+			]
+		}
+	],
+	"solution_file": "3Dproject/3Dproject.sln"
+}
